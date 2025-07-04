@@ -8,10 +8,24 @@ const timeUnits = [
 ]
 
 export default function durationString(
-  beforeTime: bigint,
+  beforeTime: bigint | number,
   useColors: boolean
 ): string {
-  const nanoseconds = Number(process.hrtime.bigint() - beforeTime)
+  // Defensive: ensure beforeTime is a BigInt
+  let before: bigint
+  if (typeof beforeTime === 'bigint') {
+    before = beforeTime
+  } else if (typeof beforeTime === 'number' && Number.isFinite(beforeTime)) {
+    before = BigInt(Math.floor(beforeTime))
+  } else {
+    // fallback: invalid input, treat as 0 duration
+    const zero = useColors
+      ? chalk.gray('0ns'.padStart(8).padEnd(16))
+      : '0ns'.padStart(8).padEnd(16)
+    return zero
+  }
+
+  const nanoseconds = Number(process.hrtime.bigint() - before)
 
   for (const { unit, threshold, decimalPlaces } of timeUnits) {
     if (nanoseconds >= threshold) {
