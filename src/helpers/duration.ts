@@ -12,7 +12,7 @@ export default function durationString(
   useColors: boolean
 ): string {
   // --- DEBUGGING ---
-  console.log(`[durationString] beforeTime: ${beforeTime}, typeof: ${typeof beforeTime}`);
+  // console.log(`[durationString] beforeTime: ${beforeTime}, typeof: ${typeof beforeTime}`);
   // --- END DEBUGGING ---
 
   // Defensive: ensure beforeTime is a BigInt
@@ -32,7 +32,7 @@ export default function durationString(
   const nanoseconds = Number(process.hrtime.bigint() - before)
 
   // --- DEBUGGING ---
-  console.log(`[durationString] calculated nanoseconds: ${nanoseconds}`);
+  // console.log(`[durationString] calculated nanoseconds: ${nanoseconds}`);
   // --- END DEBUGGING ---
 
   for (const { unit, threshold, decimalPlaces } of timeUnits) {
